@@ -12,7 +12,7 @@ A real-time code collaboration platform built with React, TypeScript, Node.js, a
 - Document management
 - Live cursor presence
 
-## Setup
+## Setup for dir
 
 ### Backend
 
