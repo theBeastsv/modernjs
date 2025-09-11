@@ -8,36 +8,34 @@ datasource db {
 }
 
 model User {
-  id           String        @id @default(cuid())
-  email        String        @unique
-  username     String        @unique
-  password     String
-  documents    Document[]    @relation("DocumentOwner")
-  collaborations Collaborator[] // Documents user collaborates on
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  id        String   @id @default(cuid())
+  email     String   @unique
+  username  String   @unique
+  password  String
+  documents Document[]
+  collabDocs Collaborator[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Document {
-  id           String        @id @default(cuid())
-  title        String        @default("Untitled Document")
-  content      String        @default("")
-  language     String        @default("javascript")
-  isPublic     Boolean       @default(false)
-  createdBy    User          @relation("DocumentOwner", fields: [userId], references: [id])
-  userId       String
-  collaborators Collaborator[] // Users who can collaborate on this document
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  id        String   @id @default(cuid())
+  title     String   @default("Untitled")
+  content   String   @default("")
+  language  String   @default("javascript")
+  createdBy User     @relation(fields: [userId], references: [id])
+  userId    String
+  collaborators Collaborator[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Collaborator {
   id         String   @id @default(cuid())
-  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  document   Document @relation(fields: [documentId], references: [id])
   documentId String
   user       User     @relation(fields: [userId], references: [id])
   userId     String
-  canEdit    Boolean  @default(true) // Permission level
   createdAt  DateTime @default(now())
 
   @@unique([documentId, userId])
